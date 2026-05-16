@@ -1,22 +1,152 @@
-# Frontstage NutriBot (MVP) 🤖🥕
+# Frontstage NutriBot MVP
 
-[span_0](start_span)Este repositorio contiene el desarrollo del Frontstage para NutriBot, diseñado bajo el concepto de "Tamagotchi Cognitivo"[span_0](end_span).
+Frontstage NutriBot es una interfaz web modular para un chatbot educativo basado en el concepto de **Tamagotchi Cognitivo**.
 
-## 🚀 Objetivo del Equipo A
-[span_1](start_span)Desarrollar la **Arquitectura de Interfaz y Conectividad**, encargándonos de la lógica conversacional, el manejo de estados y la integración con la API[span_1](end_span).
+Este repositorio corresponde al trabajo del **Equipo A: Arquitectura de Interfaz y Conectividad**, encargado de la lógica conversacional, el manejo del estado del chat y la integración temporal con una Mock API.
 
-### 📋 Requerimientos Técnicos
-* **[span_2](start_span)[span_3](start_span)Interfaz de Chat:** Input multilínea que fomente prompts profundos, historial dinámico y estados de carga (spinners/escritura)[span_2](end_span)[span_3](end_span).
-* **[span_4](start_span)Conectividad:** Implementación de Mock API (fetch/axios) para conectar temporalmente con OpenAI/Groq[span_4](end_span).
-* **[span_5](start_span)Contrato JSON:** Manejo estricto de la estructura de respuesta que incluye `respuestaTexto` y `metadatosCognitivos` (`perfilActivo`, `esfuerzoDetectado`, etc.)[span_5](end_span).
-* **[span_6](start_span)Perfiles de Respuesta:** Configurar la lógica para los estados "GUIA", "ESPEJO_SARCASTICO" y "RESISTENCIA"[span_6](end_span).
+## Objetivo del MVP
 
-### 🛠️ Estructura de Trabajo
-* **[span_7](start_span)Arquitectura:** Componentes aislados y modulares[span_7](end_span).
-* **[span_8](start_span)Diseño:** Responsivo (Escritorio/Móvil)[span_8](end_span).
-* **[span_9](start_span)Flujo:** Uso estricto de ramas en Git para evitar colisiones[span_9](end_span).
+Desarrollar una interfaz funcional que permita:
 
-### 👥 Roles Pendientes por Definir
-De acuerdo a las instrucciones de la profesora, necesitamos asignar:
-1. **Product Owner** (Visión del producto).
-2. **Project Manager** (Gestión de tiempos y comunicación).
+- Escribir prompts estructurados en un input multilínea.
+- Visualizar historial de conversación.
+- Mostrar estados de carga mientras el sistema responde.
+- Conectarse temporalmente a una Mock API.
+- Recibir respuestas bajo un contrato JSON definido.
+- Cambiar el estado visual según el perfil cognitivo activo.
+- Probar los estados cognitivos mediante un Panel DevMock.
+
+## Perfiles cognitivos
+
+El frontend reconoce los siguientes perfiles:
+
+- `GUIA`
+- `ESPEJO_SARCASTICO`
+- `RESISTENCIA`
+
+## Tecnologías
+
+- React
+- Vite
+- TypeScript
+- CSS
+- Git
+- GitHub
+
+## Requisitos
+
+Se recomienda usar:
+
+- Node.js 20 o superior
+- npm
+- Git
+- Navegador web moderno
+
+## Instalación
+
+Clonar el repositorio:
+
+```bash
+git clone https://github.com/MarcoHernandezz/Frontstage-NutriBot.git
+cd Frontstage-NutriBot
+```
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+Ejecutar en modo desarrollo:
+
+```bash
+npm run dev
+```
+
+Abrir en el navegador:
+
+```txt
+http://localhost:5173/
+```
+
+Compilar para producción:
+
+```bash
+npm run build
+```
+
+## Estructura principal
+
+```txt
+src/
+├── components/
+│   ├── chat/
+│   ├── cognitive/
+│   └── dev/
+├── services/
+├── types/
+├── utils/
+├── App.tsx
+└── main.tsx
+```
+
+## Avances implementados
+
+- Configuración inicial del proyecto con React, Vite y TypeScript.
+- Estructura modular de carpetas.
+- Chat base con input multilínea.
+- Historial dinámico de conversación.
+- Estados de carga.
+- Mock API temporal.
+- Contrato JSON base.
+- Perfiles cognitivos: `GUIA`, `ESPEJO_SARCASTICO` y `RESISTENCIA`.
+- Panel lateral de estado cognitivo.
+- Barra de energía cognitiva.
+- Cooldown de 5 segundos para `RESISTENCIA`.
+- Panel DevMock para forzar estados durante pruebas.
+- Documentación inicial del MVP.
+
+## Documentación disponible
+
+- `docs/01-plan-semana-1.md`
+- `docs/02-backlog-mvp.md`
+- `docs/03-contrato-json.md`
+- `docs/04-panel-devmock.md`
+- `docs/05-manual-usuario.md`
+- `docs/06-manual-tecnico.md`
+- `docs/07-plan-pruebas.md`
+- `docs/08-matriz-cumplimiento.md`
+
+## Panel DevMock
+
+El Panel DevMock es una herramienta interna para pruebas.
+
+Permite forzar manualmente los estados:
+
+- `GUIA`
+- `ESPEJO_SARCASTICO`
+- `RESISTENCIA`
+
+Puede abrirse desde el botón **DevMock** o con el atajo:
+
+```txt
+Ctrl + Shift + D
+```
+
+## Flujo de ramas
+
+- `main`: versión estable.
+- `develop`: integración del proyecto.
+- `feature/*`: nuevas funcionalidades.
+- `docs/*`: documentación.
+- `chore/*`: configuración y mantenimiento.
+
+## Estado actual
+
+El proyecto se encuentra en fase MVP funcional. Actualmente incluye chat estructurado, Mock API, estados cognitivos, cooldown de resistencia, Panel DevMock y documentación base.
+
+## Liga pública del MVP
+
+El MVP puede consultarse en GitHub Pages:
+
+https://MarcoHernandezz.github.io/Frontstage-NutriBot/

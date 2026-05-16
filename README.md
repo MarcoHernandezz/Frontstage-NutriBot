@@ -144,3 +144,9 @@ Ctrl + Shift + D
 ## Estado actual
 
 El proyecto se encuentra en fase MVP funcional. Actualmente incluye chat estructurado, Mock API, estados cognitivos, cooldown de resistencia, Panel DevMock y documentación base.
+
+## Liga pública del MVP
+
+El MVP puede consultarse en GitHub Pages:
+
+https://MarcoHernandezz.github.io/Frontstage-NutriBot/

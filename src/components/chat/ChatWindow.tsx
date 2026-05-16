@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { CognitiveStatePanel } from "../cognitive/CognitiveStatePanel";
 import { sendPromptToNutriBot } from "../../services/nutriBotApi";
 import type { ChatMessage } from "../../types/nutriBot";
 import { LoadingIndicator } from "./LoadingIndicator";
@@ -20,12 +21,31 @@ const initialMessage: ChatMessage = {
 export function ChatWindow() {
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [isLoading, setIsLoading] = useState(false);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
   const lastMetadata = useMemo(() => {
     return [...messages].reverse().find((message) => message.metadata)?.metadata;
   }, [messages]);
 
+  const isBlocked = cooldownSeconds > 0;
+
+  useEffect(() => {
+    if (cooldownSeconds <= 0) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setCooldownSeconds((currentSeconds) => Math.max(currentSeconds - 1, 0));
+    }, 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [cooldownSeconds]);
+
   async function handleSubmit(prompt: string) {
+    if (isBlocked) {
+      return;
+    }
+
     const userMessage: ChatMessage = {
       id: createMessageId(),
       role: "user",
@@ -48,6 +68,10 @@ export function ChatWindow() {
       };
 
       setMessages((currentMessages) => [...currentMessages, assistantMessage]);
+
+      if (response.metadatosCognitivos.perfilActivo === "RESISTENCIA") {
+        setCooldownSeconds(5);
+      }
     } catch (error) {
       console.error(error);
 
@@ -65,7 +89,7 @@ export function ChatWindow() {
   }
 
   return (
-    <section className="chat-window">
+    <section className={`chat-window ${lastMetadata ? `chat-window--${lastMetadata.perfilActivo.toLowerCase()}` : ""}`}>
       <div className="chat-window__main">
         <header className="chat-window__header">
           <div>
@@ -83,30 +107,16 @@ export function ChatWindow() {
           {isLoading && <LoadingIndicator />}
         </div>
 
-        <PromptInput onSubmit={handleSubmit} isLoading={isLoading} />
+        {isBlocked && (
+          <div className="blocked-banner">
+            NutriBot entró en modo RESISTENCIA. Espera {cooldownSeconds}s antes de enviar otro prompt.
+          </div>
+        )}
+
+        <PromptInput onSubmit={handleSubmit} isLoading={isLoading || isBlocked} />
       </div>
 
-      <aside className="chat-window__side-panel">
-        <p className="eyebrow">Estado cognitivo</p>
-        <h3>{lastMetadata?.perfilActivo ?? "SIN_ANALISIS"}</h3>
-
-        <div className="energy-card">
-          <span>Esfuerzo detectado</span>
-          <strong>{lastMetadata?.esfuerzoDetectado ?? 0}/100</strong>
-          <div className="energy-bar">
-            <div style={{ width: `${lastMetadata?.esfuerzoDetectado ?? 0}%` }} />
-          </div>
-        </div>
-
-        <div className="json-preview">
-          <p>Último contrato JSON</p>
-          <pre>
-            {lastMetadata
-              ? JSON.stringify(lastMetadata, null, 2)
-              : "Aún no hay metadatos cognitivos."}
-          </pre>
-        </div>
-      </aside>
+      <CognitiveStatePanel metadata={lastMetadata} cooldownSeconds={cooldownSeconds} />
     </section>
   );
 }

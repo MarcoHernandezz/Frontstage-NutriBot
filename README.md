@@ -78,3 +78,31 @@ La documentacion del proyecto se encuentra en la carpeta docs.
 ## Estado actual
 
 Proyecto en fase inicial de configuracion y desarrollo del MVP.
+
+## Avances implementados
+
+- Configuración inicial del proyecto con React, Vite y TypeScript.
+- Estructura modular de carpetas.
+- Chat base con input multilínea.
+- Historial dinámico de conversación.
+- Estados de carga.
+- Mock API temporal.
+- Contrato JSON base.
+- Perfiles cognitivos: GUIA, ESPEJO_SARCASTICO y RESISTENCIA.
+- Panel lateral de estado cognitivo.
+- Barra de energía cognitiva.
+- Cooldown de 5 segundos para RESISTENCIA.
+- Panel DevMock para forzar estados durante pruebas.
+- Documentación inicial del MVP.
+
+## Documentos disponibles
+
+- docs/01-plan-semana-1.md
+- docs/02-backlog-mvp.md
+- docs/03-contrato-json.md
+- docs/04-panel-devmock.md
+- docs/05-manual-usuario.md
+- docs/06-manual-tecnico.md
+- docs/07-plan-pruebas.md
+- docs/08-matriz-cumplimiento.md
+

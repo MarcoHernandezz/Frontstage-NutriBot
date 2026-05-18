@@ -164,3 +164,11 @@ El sistema implementa una interfaz de chat estructurada, conexión temporal medi
 La aplicación se encuentra en un estado funcional para revisión, demostración y futuras integraciones con un backend o modelo de lenguaje real.
 OFE
 cat > docs/09-evidencia-pruebas.md <<'EOF'
+
+## 10. Pruebas adicionales de persistencia
+
+| ID | Prueba | Entrada / Acción | Resultado esperado | Estado |
+|---|---|---|---|---|
+| CP-21 | Persistencia de historial | Enviar mensaje y recargar la página | El historial permanece visible | Aprobado |
+| CP-22 | Limpiar historial | Presionar botón `Limpiar chat` | El historial se reinicia con el mensaje inicial | Aprobado |
+| CP-23 | Reinicio de estado cognitivo | Limpiar chat después de una respuesta | El estado cognitivo vuelve a su estado inicial | Aprobado |

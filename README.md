@@ -150,3 +150,14 @@ El proyecto se encuentra en fase MVP funcional. Actualmente incluye chat estruct
 El MVP puede consultarse en GitHub Pages:
 
 https://MarcoHernandezz.github.io/Frontstage-NutriBot/
+
+## Mejora reciente: historial persistente
+
+El chat ahora guarda temporalmente el historial de conversación usando localStorage del navegador.
+
+Funciones agregadas:
+
+- El historial se conserva al recargar la página.
+- El usuario puede limpiar el historial con el botón `Limpiar chat`.
+- Al limpiar el chat, también se reinicia el estado cognitivo activo.
+- La mejora mantiene compatibilidad con DevMock, Mock API y cooldown de RESISTENCIA.

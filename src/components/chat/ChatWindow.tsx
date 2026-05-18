@@ -7,8 +7,41 @@ import { LoadingIndicator } from "./LoadingIndicator";
 import { MessageBubble } from "./MessageBubble";
 import { PromptInput } from "./PromptInput";
 
+const STORAGE_KEY = "frontstage-nutribot-chat-history";
+
 function createMessageId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function createInitialMessage(): ChatMessage {
+  return {
+    id: "initial-message",
+    role: "assistant",
+    content:
+      "Hola, soy NutriBot. Escribe una solicitud con contexto, objetivo y detalles. Mientras mejor estructures tu prompt, mejor será mi respuesta.",
+    createdAt: new Date().toISOString()
+  };
+}
+
+function loadStoredMessages(): ChatMessage[] {
+  try {
+    const storedMessages = window.localStorage.getItem(STORAGE_KEY);
+
+    if (!storedMessages) {
+      return [createInitialMessage()];
+    }
+
+    const parsedMessages = JSON.parse(storedMessages) as ChatMessage[];
+
+    if (!Array.isArray(parsedMessages) || parsedMessages.length === 0) {
+      return [createInitialMessage()];
+    }
+
+    return parsedMessages;
+  } catch (error) {
+    console.error("No se pudo cargar el historial guardado:", error);
+    return [createInitialMessage()];
+  }
 }
 
 function createForcedMetadata(perfilActivo: PerfilActivo): MetadatosCognitivos {
@@ -33,16 +66,8 @@ function createForcedMetadata(perfilActivo: PerfilActivo): MetadatosCognitivos {
   };
 }
 
-const initialMessage: ChatMessage = {
-  id: "initial-message",
-  role: "assistant",
-  content:
-    "Hola, soy NutriBot. Escribe una solicitud con contexto, objetivo y detalles. Mientras mejor estructures tu prompt, mejor será mi respuesta.",
-  createdAt: new Date().toISOString()
-};
-
 export function ChatWindow() {
-  const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => loadStoredMessages());
   const [isLoading, setIsLoading] = useState(false);
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
   const [isDevPanelOpen, setIsDevPanelOpen] = useState(false);
@@ -54,6 +79,10 @@ export function ChatWindow() {
 
   const activeMetadata = forcedMetadata ?? lastMetadata;
   const isBlocked = cooldownSeconds > 0;
+
+  useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+  }, [messages]);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -98,6 +127,21 @@ export function ChatWindow() {
   function handleClearOverride() {
     setForcedMetadata(undefined);
     setCooldownSeconds(0);
+  }
+
+  function handleClearChat() {
+    const confirmed = window.confirm("¿Seguro que quieres limpiar el historial del chat?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    const initialMessage = createInitialMessage();
+
+    setMessages([initialMessage]);
+    setForcedMetadata(undefined);
+    setCooldownSeconds(0);
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify([initialMessage]));
   }
 
   async function handleSubmit(prompt: string) {
@@ -160,6 +204,14 @@ export function ChatWindow() {
             </div>
 
             <div className="chat-window__actions">
+              <button
+                type="button"
+                className="clear-chat-trigger"
+                onClick={handleClearChat}
+              >
+                Limpiar chat
+              </button>
+
               <button
                 type="button"
                 className="devmock-trigger"
